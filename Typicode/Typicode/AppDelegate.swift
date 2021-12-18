@@ -7,30 +7,49 @@
 
 import UIKit
 
+@available(iOS 13.0, *)
+let TheAppController = UIApplication.shared.delegate as! AppDelegate
+
+@available(iOS 13.0, *)
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+    var window: UIWindow?
+    var mainNavigationController: UINavigationController?
+    var globalTabBarController: TabBarController!
+    
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.backgroundColor = UIColor.white
+        self.window?.makeKeyAndVisible()
+                
+        handleFirstScreen()
+                
         return true
     }
+    
+    func handleFirstScreen() {
+        
+        let vc = HomeViewController()
+        let navigationController = UINavigationController(rootViewController: vc)
 
-    // MARK: UISceneSession Lifecycle
+        navigationController.isNavigationBarHidden = true
+        navigationController.navigationBar.shadowImage = nil
+        navigationController.navigationBar.isTranslucent = true
 
-    func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
-        // Called when a new scene session is being created.
-        // Use this method to select a configuration to create the new scene with.
-        return UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+        mainNavigationController = navigationController
+
+        self.window?.rootViewController = mainNavigationController
+        self.window?.backgroundColor = UIColor.init(red: 0.87, green: 0.87, blue: 0.87, alpha: 1)
+        
+        tabBarController()
     }
-
-    func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
-        // Called when the user discards a scene session.
-        // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
-        // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    
+    func tabBarController(){
+        globalTabBarController = TabBarController()
+        globalTabBarController.selectedIndex = 0
+        mainNavigationController?.pushViewController(globalTabBarController, animated: true)
     }
-
-
 }
 
